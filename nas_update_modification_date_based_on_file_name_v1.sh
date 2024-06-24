@@ -32,8 +32,8 @@ echo "Executed in source folder : '$SOURCE_FOLDER'" >> "$log_file"
 echo "START script : $0 at $(date +%Y%m%d_%H%M%S)"
 echo "Executed in source folder : '$SOURCE_FOLDER'"
 
-# Function to update the modification date of a file
-update_mod_date() {
+# Function to update the modification date of a file based on the file name pattern "IMG-YYYYMMDD-WAXXXXXXXX.jpg"
+update_modification_date() {
     local file="$1"
     echo "--------------------------------" >> "$log_file"
     echo "--------------------------------"
@@ -70,7 +70,7 @@ update_mod_date() {
 
 # Use find to locate all JPG files and process each one
 find "$SOURCE_FOLDER" -type f -name 'IMG-*.jpg' -print0 | while IFS= read -r -d '' file; do
-    update_mod_date "$file"
+    update_modification_date "$file"
 done
 
 echo "--------------------------------" >> "$log_file"
