@@ -57,7 +57,7 @@ update_modification_date() {
     seconds=$(echo "$current_time" | cut -d':' -f3 | cut -d'+' -f1)
 
     # Extract the date from the filename
-    date_from_filename=$(echo "$file" | grep -oP '(?<=IMG-)\d{8}(?=-WA)')
+    date_from_filename=$(echo "$file" | grep -oP '(?<=IMG-)\d{8}(?=-WA)|(?<=VID-)\d{8}(?=-WA)')
 
     # Format the new modification date
     new_mod_date="${date_from_filename:0:4}:${date_from_filename:4:2}:${date_from_filename:6:2} ${hours}:${minutes}:${seconds}"
