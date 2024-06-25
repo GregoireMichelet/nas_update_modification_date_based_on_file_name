@@ -45,11 +45,15 @@ echo "Executed in source folder : '$SOURCE_FOLDER'"
 update_mod_date_for_all() {
     local folder="$1"
     local new_mod_date="$2"
+    echo "--------------------------------" >> "$log_file"
+    echo "--------------------------------"
+    echo "Processing file : $file" >> "$log_file"
+    echo "Processing file : $file"
 
     # Use find to locate jpeg, jpg, mp4, and MP4 files and process each one
     find "$folder" -type f \( -iname '*.jpeg' -o -iname '*.jpg' -o -iname '*.mp4' -o -iname '*.MP4' \) -print0 | while IFS= read -r -d '' file; do
         # Update the file's modification date
-        exiftool -P -overwrite_original -FileModifyDate="$new_mod_date" "$file"
+        exiftool -P -overwrite_original -FileModifyDate="$new_mod_date" "$file" >> "$log_file" 2>&1
     done
 }
 

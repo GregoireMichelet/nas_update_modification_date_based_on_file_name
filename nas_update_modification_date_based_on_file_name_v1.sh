@@ -91,7 +91,7 @@ update_mod_date_mes_photos() {
     echo "Extracted date : $new_mod_date"
 
     # Update the file's modification date
-    exiftool -P -overwrite_original -FileModifyDate="$new_mod_date" "$file"
+    exiftool -P -overwrite_original -FileModifyDate="$new_mod_date" "$file" >> "$log_file" 2>&1
 }
 
 # Main function to determine which format to use and update the modification date
