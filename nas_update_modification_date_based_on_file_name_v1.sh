@@ -108,7 +108,7 @@ update_modification_date() {
 }
 
 # Use find to locate all JPG files and process each one
-find "$SOURCE_FOLDER" -type f \( -name 'IMG-*.jpg' -o -name 'VID-*.mp4' -o -name '[0-9]*_[0-9]*.jpg' -o -name '[0-9]*_[0-9]*.mp4' \) -print0 | while IFS= read -r -d '' file; do
+find "$SOURCE_FOLDER" -type f \( -name 'IMG-*.jpg' -o -name 'VID-*.mp4' -o -name '[0-9]*_[0-9]*.jpg' -o -name '[0-9]*_[0-9]*.mp4' \) ! -path '*/@eaDir/*' -print0 | while IFS= read -r -d '' file; do
     update_modification_date "$file"
 done
 
