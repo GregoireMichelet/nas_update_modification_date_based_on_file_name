@@ -47,11 +47,12 @@ update_mod_date_for_all() {
     local new_mod_date="$2"
     echo "--------------------------------" >> "$log_file"
     echo "--------------------------------"
-        echo "Processing folder : $folder" >> "$log_file"
-        echo "Processing folder : $folder"
+    echo "Processing folder : $folder" >> "$log_file"
+    echo "Processing folder : $folder"
 
     # Use find to locate jpeg, jpg, mp4, and MP4 files and process each one
-    find "$folder" -type f \( -iname '*.jpeg' -o -iname '*.jpg' -o -iname '*.JPG' -o -iname '*.mp4' -o -iname '*.MP4' \) -print0 | while IFS= read -r -d '' file; do
+    # Ignoring files in folder @eaDir
+    find "$folder" -type f \( -iname '*.jpeg' -o -iname '*.jpg' -o -iname '*.JPG' -o -iname '*.mp4' -o -iname '*.MP4' \) ! -path '*/@eaDir/*' -print0 | while IFS= read -r -d '' file; do
         # Update the file's modification date
         echo "Processing file : $file" >> "$log_file"
         echo "Processing file : $file"
