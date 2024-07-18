@@ -58,7 +58,7 @@ update_mod_date_for_all() {
 }
 
 # Call the function to update the modification date for all files
-update_mod_date_for_all "$SOURCE_FOLDER" "$NEW_MOD_DATE"
+update_mod_date_for_all "$SOURCE_FOLDER" "$NEW_MODIFICATION_DATE"
 
 echo "--------------------------------" >> "$log_file"
 echo "END script : $0 at $(date +%Y%m%d_%H%M%S)" >> "$log_file"
