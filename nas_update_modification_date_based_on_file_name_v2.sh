@@ -94,6 +94,33 @@ update_mod_date_mes_photos() {
     exiftool -P -overwrite_original -FileModifyDate="$new_mod_date" "$file" >> "$log_file" 2>&1
 }
 
+# Function to update the modification date for "mes-photos" files
+update_mod_date_mes_photos_other_format() {
+    local file="$1"
+    echo "--------------------------------" >> "$log_file"
+    echo "--------------------------------"
+    echo "Processing mes-photos file other format : $file" >> "$log_file"
+    echo "Processing mes-photos file other format : $file"
+
+    # Extract the date and time from the filename
+    date_from_filename=$(basename "$file" | grep -oP 'IMG\d{5}-\d{8}-\d{4}.jpg')
+    echo "$date_from_filename"
+
+    # Check if $date_from_filename is extracted successfully
+    if [ -z "$date_from_filename" ]; then
+        echo "Error: Unable to extract date from filename for file $file"
+        return
+    fi
+
+    # Format the new modification date
+    new_mod_date="${date_from_filename:9:4}:${date_from_filename:13:2}:${date_from_filename:15:2} ${date_from_filename:18:2}:${date_from_filename:20:2}:00"
+    echo "Extracted date : $new_mod_date" >> "$log_file"
+    echo "Extracted date : $new_mod_date"
+
+    # Update the file's modification date
+    exiftool -P -overwrite_original -FileModifyDate="$new_mod_date" "$file" >> "$log_file" 2>&1
+}
+
 # Main function to determine which format to use and update the modification date
 update_modification_date() {
     local file="$1"
@@ -102,13 +129,15 @@ update_modification_date() {
         update_mod_date_whatsapp "$file"
     elif [[ "$file" =~ [0-9]{8}_[0-9]{6}.jpg ]] || [[ "$file" =~ [0-9]{8}_[0-9]{6}.mp4 ]]; then
         update_mod_date_mes_photos "$file"
+    elif [[ "$file" =~ IMG[0-9]{5}-[0-9]{8}-[0-9]{4}.jpg ]]; then
+        update_mod_date_mes_photos_other_format "$file"
     else
         echo "Error: Unrecognized file format for file $file"
     fi
 }
 
 # Use find to locate all JPG files and process each one
-find "$SOURCE_FOLDER" -type f \( -name 'IMG-*.jpg' -o -name 'VID-*.mp4' -o -name '[0-9]*_[0-9]*.jpg' -o -name '[0-9]*_[0-9]*.mp4' \) ! -path '*/@eaDir/*' -print0 | while IFS= read -r -d '' file; do
+find "$SOURCE_FOLDER" -type f \( -name 'IMG*.jpg' -o -name 'VID-*.mp4' -o -name '[0-9]*_[0-9]*.jpg' -o -name '[0-9]*_[0-9]*.mp4' \) ! -path '*/@eaDir/*' -print0 | while IFS= read -r -d '' file; do
     update_modification_date "$file"
 done
 
